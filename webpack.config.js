@@ -3,7 +3,10 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 module.exports = {
-  entry: './index.js',
+  entry: {
+    app:'./index.js',
+    utils: ['Utils']
+  },
   output: {
     path: path.join(__dirname, "/dist/"),
     filename: '[name].bundle.js'
@@ -22,7 +25,7 @@ module.exports = {
           options: {
             name: 'img/[name].[hash:8].[ext]',
             limit: 81920
-          }
+          } 
         }
       },
       {
@@ -50,11 +53,23 @@ module.exports = {
     host: 'localhost',
     inline: true
   },
+  resolve: {
+    extensions: [".js",'.jsx'],
+    alias: {
+        '@': path.resolve(__dirname,'.', 'src'),
+        'Utils': path.resolve(__dirname, '.', 'src/utils')
+    }
+},
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'public/index.html', //html模板路径
       hash: false
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['utils'],
+      filename: '[name].min.js',
+      minChunks: Infinity
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
