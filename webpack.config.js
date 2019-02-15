@@ -1,12 +1,11 @@
 var path = require("path")
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-console.log(path.join(__dirname, '/abc/'))
 module.exports = {
   entry: './index.js',
   output: {
     path: path.join(__dirname, "/dist/"),
-    filename: '[name].bundle.js',
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
@@ -48,19 +47,18 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, '/public/'),//本地服务器所加载的页面所在的目录（本地目录）
-    // publicPath: '/abc/',
+    // publicPath: '/abc/',若加上此配置，浏览器访问的时候需要在url后面加上/abc/
     port: 9008,
     hot: true,
     host: 'localhost',
     inline: true
   },
-
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   filename: 'index.html',
-    //   template: 'public/index.html', //html模板路径
-    //   hash: false
-    // }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'public/index.html', //html模板路径
+      hash: false
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ]

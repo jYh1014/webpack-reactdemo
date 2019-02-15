@@ -6,15 +6,10 @@ import Header from './src/components/Header.js'
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      name: 'app11111222'
-      }
   }
   render() {
     return (
       <div>
-
-        {this.state.name}
         <Header />
       </div>
     )
