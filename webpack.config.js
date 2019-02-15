@@ -1,6 +1,7 @@
 var path = require("path")
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 module.exports = {
   entry: './index.js',
   output: {
@@ -33,16 +34,12 @@ module.exports = {
         },
       },
       {
-          test: /\.less$/,
-          use: ['style-loader','css-loader','less-loader']
-      },
-      // {
-      //   test: /\.less$/,
-      //   use: ExtractTextPlugin.extract({
-      //     fallback: "style-loader",
-      //     use: ['css-loader', 'less-loader']
-      //   })
-      // }
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: ['css-loader', 'less-loader']
+        })
+      }
     ]
   },
   devServer: {
@@ -60,6 +57,7 @@ module.exports = {
       hash: false
     }),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin('[name].css')
   ]
 }
