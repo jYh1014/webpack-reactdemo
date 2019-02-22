@@ -2,6 +2,9 @@ var path = require("path")
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var manifest = require('./vendor/vendor.manifest.json')
+var bundleConfig = require("./bundle-config.json")
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   entry: {
     app:'./index.js',
@@ -61,11 +64,23 @@ module.exports = {
     }
 },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./vendor/vendor.manifest.json')
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'public/index.html', //html模板路径
+      vendorJsName: bundleConfig.vendor.js,
       hash: false
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, './vendor'),
+        to: 'vendor',
+        ignore: ['.*']
+      }
+    ]),
     new webpack.optimize.CommonsChunkPlugin({
       names: ['utils'],
       filename: '[name].min.js',
